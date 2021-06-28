@@ -1,9 +1,10 @@
 package main
 
-	import (
-		"fmt"
-		"net/http"
-	)
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
 
 	func rotaPrincipal(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w, "Bem vindo")
