@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -46,9 +47,9 @@ import (
 
 	func configurarServidor(){
 		configurarRotas()
-
+		//TODO if error dont show this message.
 		fmt.Println("Servidor está rodando na porta 1337")
-		http.ListenAndServe(":1337", nil) //defaultServerMux
+		log.Fatal(http.ListenAndServe(":1337", nil)) //defaultServerMux
 	}
 
 
