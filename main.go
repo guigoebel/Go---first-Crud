@@ -34,8 +34,14 @@ import (
 		fmt.Fprintf(w, "Bem vindo")
 	}
 
+	func listarLivros(w http.ResponseWriter, r *http.Request){
+		encoder := json.NewEncoder(w)
+		encoder.Encode(Livros)
+	}
+
 	func configurarRotas(){
 		http.HandleFunc("/", rotaPrincipal)
+		http.HandleFunc("/livros", listarLivros)
 	}
 
 	func configurarServidor(){
