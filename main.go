@@ -8,9 +8,9 @@ import (
 )
 
 	type Livro struct {
-		Id int
-		Titulo string
-		Autor string
+		Id int `json:"id"`
+		Titulo string `json:"titulo"`
+		Autor string `json:"autor"`
 	}
 
 	var Livros []Livro = []Livro{
@@ -36,6 +36,7 @@ import (
 	}
 
 	func listarLivros(w http.ResponseWriter, r *http.Request){
+		w.Header().Set("Content-Type", "application/json")
 		encoder := json.NewEncoder(w)
 		encoder.Encode(Livros)
 	}
