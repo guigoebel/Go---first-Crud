@@ -6,6 +6,11 @@ import (
 	"net/http"
 )
 
+	type Livro struct {
+		Id int
+		Titulo string
+		Autor string
+	}
 	func rotaPrincipal(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w, "Bem vindo")
 	}
