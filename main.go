@@ -48,7 +48,7 @@ import (
 		body, erro := ioutil.ReadAll(r.Body)
 
 		if erro != nil{
-			//TODO lidar com erro
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
@@ -87,6 +87,51 @@ import (
 		w.WriteHeader(http.StatusNoContent)
 	}
 
+	func modificarLivro (w http.ResponseWriter, r *http.Request){
+		partes := strings.Split(r.URL.Path, "/")
+		id, erro := strconv.Atoi(partes[2])
+
+		if erro != nil{
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		corpo, err := ioutil.ReadAll(r.Body)
+
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		var livroModificado Livro
+		erroJson := json.Unmarshal(corpo, &livroModificado)
+
+		if erroJson != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		indiceLivro := -1
+		for indice, livro := range Livros {
+			if livro.Id == id {
+				indiceLivro = indice
+				break
+			}
+		}
+
+		if indiceLivro < 0 {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		Livros[indiceLivro] = livroModificado
+		Livros[indiceLivro].Id = indiceLivro + 1
+
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(livroModificado)
+
+	}
+
 	func rotearLivros(w http.ResponseWriter, r *http.Request){
 		//ta mto feio isso, existe algum método melhor?
 		//livros
@@ -104,6 +149,8 @@ import (
 				buscarLivro(w, r)
 			}else if r.Method == "DELETE"{
 				excluirLivro(w, r)
+			}else if r.Method == "PUT"{
+				modificarLivro(w, r)
 			}
 		} else {
 			w.WriteHeader(http.StatusNotFound)
